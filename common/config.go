@@ -31,6 +31,7 @@ type BaseConf struct {
 	LogLevel     int
 	FalconClient string
 	IgnoreFile   string
+	Step         int
 }
 
 // DatabaseConf config about database
@@ -92,6 +93,12 @@ func readConf(file string) (conf Config, err error) {
 		port = 3306
 		err = nil
 	}
+	step, err := cfg.Section("default").Key("step").Int()
+        if err != nil {
+                fmt.Println("Step: default 60!")
+                step = 60
+                err = nil
+        }
 	conf = Config{
 		BaseConf{
 			BaseDir:      cfg.Section("default").Key("basedir").String(),
@@ -103,6 +110,7 @@ func readConf(file string) (conf Config, err error) {
 			LogLevel:     logLevel,
 			FalconClient: cfg.Section("default").Key("falcon_client").String(),
 			IgnoreFile:   cfg.Section("default").Key("ignore_file").String(),
+			Step:         step,
 		},
 		DatabaseConf{
 			User:     cfg.Section("mysql").Key("user").String(),
