@@ -289,7 +289,7 @@ type MetaData struct {
 	CounterType string      `json:"counterType"` // GAUGE:original value, COUNTER: delta value(ps)
 	Tags        string      `json:"tags"`        // port=%d,isSlave=%d,readOnly=%d,type=mysql
 	Timestamp   int64       `json:"timestamp"`   // time.Now().Unix()
-	Step        int64       `json:"step"`        // Default 60 seconds
+	Step        int         `json:"step"`        // Default 60 seconds
 }
 
 // NewMetric is the constructor of metric
@@ -300,7 +300,7 @@ func NewMetric(conf *common.Config, name string) *MetaData {
 		CounterType: dataType(name),
 		Tags:        Tag,
 		Timestamp:   time.Now().Unix(),
-		Step:        60,
+		Step:        conf.Base.Step,
 	}
 }
 
